@@ -18,7 +18,7 @@ import {
 
 import { authClient } from "@/lib/auth-client";
 
-type UserRole = "customer" | "vendor";
+type UserRole = "customer" | "vendor" | "admin";
 
 interface SignupFormData {
   name: string;
@@ -365,7 +365,6 @@ export default function SignUpPage() {
               <input
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
-                required={formData.role === "vendor"}
                 onChange={handleImageChange}
                 className="hidden"
               />

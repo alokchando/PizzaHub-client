@@ -36,16 +36,16 @@ export default function Navbar() {
   type UserRole = "customer" | "vendor" | "admin"
   const dashboardLinks: Record<UserRole, { label: string; href: string }> = {
     customer: {
-      label: "My Orders",
-      href: "/my-orders",
+      label: "Dashboard",
+      href: "/dashboard/customer",
     },
     vendor: {
       label: "Vendor Dashboard",
-      href: "/vendor-dashboard",
+      href: "/dashboard/vendor",
     },
     admin: {
       label: "Admin Dashboard",
-      href: "/admin-dashboard",
+      href: "dashboard/admin",
     },
   }
 

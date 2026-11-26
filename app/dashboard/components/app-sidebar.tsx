@@ -32,12 +32,12 @@ const menuItemsByRole = {
   customer: [
     {
       name: "Overview",
-      url: "/customer/dashboard",
+      url: "/dashboard/customer",
       icon: LayoutDashboard,
     },
     {
       name: "My Orders",
-      url: "/customer/dashboard/orders",
+      url: "/dashboard/customer/orders",
       icon: ShoppingBag,
     },
     {
@@ -47,7 +47,7 @@ const menuItemsByRole = {
     },
     {
       name: "Profile Settings",
-      url: "/customer/dashboard/settings",
+      url: "/dashboard/customer/settings",
       icon: Settings,
     },
   ],
@@ -55,32 +55,32 @@ const menuItemsByRole = {
   vendor: [
     {
       name: "Overview",
-      url: "/vendor/dashboard",
+      url: "/dashboard/vendor",
       icon: LayoutDashboard,
     },
     {
       name: "Add Menu Item",
-      url: "/vendor/dashboard/add-item",
+      url: "/dashboard/vendor/add-item",
       icon: Plus,
     },
     {
       name: "My Menu Items",
-      url: "/vendor/dashboard/menu-items",
+      url: "/dashboard/vendor/menu-items",
       icon: UtensilsCrossed,
     },
     {
       name: "Customer Orders",
-      url: "/vendor/dashboard/orders",
+      url: "/dashboard/vendor/orders",
       icon: ClipboardList,
     },
     {
       name: "Subscription",
-      url: "/vendor/dashboard/subscription",
+      url: "/dashboard/vendor/subscription",
       icon: CreditCard,
     },
     {
       name: "Profile Settings",
-      url: "/vendor/dashboard/settings",
+      url: "/dashboard/vendor/settings",
       icon: Settings,
     },
   ],
@@ -88,31 +88,31 @@ const menuItemsByRole = {
   admin: [
     {
       name: "Overview",
-      url: "/admin/dashboard",
+      url: "/dashboard/admin",
       icon: LayoutDashboard,
     },
     {
       name: "Manage Users",
-      url: "/admin/dashboard/users",
+      url: "/dashboard/admin/users",
       icon: Users,
     },
     {
       name: "Manage Menu Items",
-      url: "/admin/dashboard/menu-items",
+      url: "/dashboard/admin/menu-items",
       icon: UtensilsCrossed,
     },
     {
       name: "Transactions",
-      url: "/admin/dashboard/transactions",
+      url: "/dashboard/admin/transactions",
       icon: Receipt,
     },
     {
       name: "Profile Settings",
-      url: "/admin/dashboard/settings",
+      url: "/dashboard/admin/settings",
       icon: Settings,
     },
   ],
-}
+};
 
 export function AppSidebar() {
   const { data: session, isPending } = useSession()
