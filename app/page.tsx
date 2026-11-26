@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button"
+import Banner from "@/components/Home/Banner";
 
 export default function Page() {
   return (
-    <div>
-    </div>
+    <Banner/>
   )
 }
