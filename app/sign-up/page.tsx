@@ -176,7 +176,7 @@ export default function SignUpPage() {
 
       router.push(
         formData.role === "vendor"
-          ? "/vendor-dashboard"
+          ? "/dashboard/vendor"
           : "/"
       );
 
