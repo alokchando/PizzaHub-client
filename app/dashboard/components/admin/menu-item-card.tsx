@@ -1,7 +1,7 @@
 "use client"
 
+import { MenuItem } from "@/lib/actions/types/menu"
 import { Check, X, Trash2, Power } from "lucide-react"
-import { MenuItem } from "../../admin/manage-menu-items/page"
 import Image from "next/image"
 
 type Props = {
@@ -27,13 +27,13 @@ export default function MenuItemCard({
             width={96}
             height={96}
             src={item.image}
-            alt={item.name}
+            alt={item.itemName}
             className="h-24 w-24 rounded-lg object-cover"
           />
         )}
 
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">{item.name}</h3>
+          <h3 className="text-lg font-semibold">{item.itemName}</h3>
           <p className="text-sm text-muted-foreground">
             {item.category} · {item.price}
           </p>
