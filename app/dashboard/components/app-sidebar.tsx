@@ -98,7 +98,7 @@ const menuItemsByRole = {
     },
     {
       name: "Manage Menu Items",
-      url: "/dashboard/admin/menu-items",
+      url: "/dashboard/admin/manage-menu-items",
       icon: UtensilsCrossed,
     },
     {

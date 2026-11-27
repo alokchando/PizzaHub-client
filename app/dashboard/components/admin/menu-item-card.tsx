@@ -1,7 +1,7 @@
 "use client"
 
 import { Check, X, Trash2, Power } from "lucide-react"
-import { MenuItem } from "../../admin/Manage Menu Items/page"
+import { MenuItem } from "../../admin/manage-menu-items/page"
 import Image from "next/image"
 
 type Props = {

@@ -1,4 +1,4 @@
-import { MenuItem } from "../../admin/Manage Menu Items/page"
+import { MenuItem } from "../../admin/manage-menu-items/page"
 
 type Props = {
   items: MenuItem[]

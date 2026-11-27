@@ -64,6 +64,7 @@ export default function AddMenuItemPage() {
     location: "",
   })
 
+  // Handle image selection
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -85,27 +86,32 @@ export default function AddMenuItemPage() {
     setPreview(URL.createObjectURL(file))
   }
 
+  // Submit menu item
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault()
 
+    // Check login
     if (!session?.user) {
       toast.error("Please login first")
       router.push("/sign-in")
       return
     }
 
+    // Check vendor role
     if (session.user.role !== "vendor") {
       toast.error("Only vendors can add menu items")
       return
     }
 
+    // Check image
     if (!image) {
       toast.error("Please upload an item image")
       return
     }
 
+    // Check required fields
     if (
       !formData.name.trim() ||
       !formData.category ||
@@ -124,15 +130,23 @@ export default function AddMenuItemPage() {
       return
     }
 
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
+    const imgbbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY
+
+    if (!serverUrl || !imgbbKey) {
+      toast.error("Server URL or ImgBB API key is missing")
+      return
+    }
+
     setLoading(true)
 
     try {
-      // Upload image to ImgBB
+      // Step 1: Upload image to ImgBB
       const imageData = new FormData()
       imageData.append("image", image)
 
       const uploadResponse = await fetch(
-        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
         {
           method: "POST",
           body: imageData,
@@ -145,33 +159,36 @@ export default function AddMenuItemPage() {
         throw new Error("Image upload failed")
       }
 
-      // Save menu item to backend
-      const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
-      if (!serverUrl) {
-        toast.error("Server URL is missing")
-        return
+      // Step 2: Prepare menu item data
+      const menuItem = {
+        vendorId: session.user.id,
+        itemName: formData.name.trim(),
+        category: formData.category,
+        description: formData.description.trim(),
+        price,
+        location: formData.location.trim(),
+        image: uploadResult.data.url,
       }
 
+      // Step 3: Send data to backend
       const response = await fetch(`${serverUrl}/menu-items`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({
-          ...formData,
-          price,
-          image: uploadResult.data.url,
-        }),
+        body: JSON.stringify(menuItem),
       })
 
       const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.message || "Failed to add menu item")
+        throw new Error(
+          result.message || "Failed to add menu item"
+        )
       }
 
+      // Step 4: Success
       toast.success("Menu item submitted for approval!")
 
       setFormData({
@@ -189,6 +206,8 @@ export default function AddMenuItemPage() {
       router.refresh()
 
     } catch (error) {
+      console.error("Add menu item error:", error)
+
       toast.error(
         error instanceof Error
           ? error.message
@@ -199,6 +218,7 @@ export default function AddMenuItemPage() {
     }
   }
 
+  // Loading session
   if (isPending) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
@@ -207,12 +227,14 @@ export default function AddMenuItemPage() {
     )
   }
 
+  // Access control
   if (!session?.user || session.user.role !== "vendor") {
     return (
       <div className="p-8 text-center">
         <h2 className="text-xl font-semibold">
           Access Denied
         </h2>
+
         <p className="mt-2 text-muted-foreground">
           Only vendors can add menu items.
         </p>
@@ -227,6 +249,7 @@ export default function AddMenuItemPage() {
       <div>
         <div className="flex items-center gap-2">
           <UtensilsCrossed className="size-6 text-primary" />
+
           <h1 className="text-2xl font-bold tracking-tight">
             Add Menu Item
           </h1>
@@ -237,10 +260,11 @@ export default function AddMenuItemPage() {
         </p>
       </div>
 
-      {/* Form */}
+      {/* Form Card */}
       <Card>
         <CardHeader>
           <CardTitle>Item Information</CardTitle>
+
           <CardDescription>
             Fill in the details below to submit your menu item.
           </CardDescription>
@@ -251,7 +275,10 @@ export default function AddMenuItemPage() {
 
             {/* Item Name */}
             <div className="space-y-2">
-              <Label htmlFor="name">Item Name *</Label>
+              <Label htmlFor="name">
+                Item Name *
+              </Label>
+
               <Input
                 id="name"
                 placeholder="e.g. Chicken Cheese Pizza"
@@ -268,12 +295,13 @@ export default function AddMenuItemPage() {
             {/* Category */}
             <div className="space-y-2">
               <Label>Category *</Label>
+
               <Select
                 value={formData.category}
                 onValueChange={(value) =>
                   setFormData({
                     ...formData,
-                    category: value ?? formData.category,
+                    category: value ?? "",
                   })
                 }
               >
@@ -317,8 +345,11 @@ export default function AddMenuItemPage() {
             {/* Price and Location */}
             <div className="grid gap-5 md:grid-cols-2">
 
+              {/* Price */}
               <div className="space-y-2">
-                <Label htmlFor="price">Price (৳) *</Label>
+                <Label htmlFor="price">
+                  Price (৳) *
+                </Label>
 
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-3 size-4 text-muted-foreground" />
@@ -341,8 +372,11 @@ export default function AddMenuItemPage() {
                 </div>
               </div>
 
+              {/* Location */}
               <div className="space-y-2">
-                <Label htmlFor="location">Location *</Label>
+                <Label htmlFor="location">
+                  Location *
+                </Label>
 
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 size-4 text-muted-foreground" />
@@ -428,6 +462,7 @@ export default function AddMenuItemPage() {
               <p className="text-sm font-medium">
                 Admin Approval Required
               </p>
+
               <p className="mt-1 text-sm text-muted-foreground">
                 Your menu item will be submitted with Pending
                 status. Customers can see it only after admin
@@ -435,7 +470,7 @@ export default function AddMenuItemPage() {
               </p>
             </div>
 
-            {/* Submit */}
+            {/* Submit Button */}
             <Button
               type="submit"
               className="w-full"
