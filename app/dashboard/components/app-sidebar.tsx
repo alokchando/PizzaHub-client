@@ -42,7 +42,7 @@ const menuItemsByRole = {
     },
     {
       name: "Browse Menu",
-      url: "/browse-menu",
+      url: "/menu",
       icon: UtensilsCrossed,
     },
     {
